@@ -2,6 +2,25 @@
 
 All notable changes to the FiveM AI NPC Controller will be documented in this file.
 
+## [1.3.0] - 2026-02-23
+
+### Fixed
+- **Version inconsistency** - Aligned all version strings to `1.3.0`
+  - `fxmanifest.lua` updated from `1.1.0` to `1.3.0`
+  - Server startup message updated from `1.0.0` to `1.3.0`
+- **`disableNPCCombat` bug** - Removed incorrect `SetPedDensityMultiplierThisFrame(0.0)` call that was erroneously hiding all NPCs instead of disabling combat
+- **`requireSiren = false` not respected** - Emergency vehicle behavior now correctly bypasses the lights check when `requireSiren` is set to `false` in config; previously lights were always required
+- **Qbox and NDCore missing from job-check trigger** - Client startup now correctly requests the player's job from the server when Qbox or NDCore compatibility is enabled (previously only ESX, QBCore, and vRP were checked)
+- **Unused variable** - Removed unused `playerPed` local variable in `ApplyNPCBehavior()`
+- **Cleanup thread deleting player-occupied vehicles** - The cleanup thread now checks all vehicle seats (driver and all passenger seats) before deleting a distant vehicle; previously only the driver seat was checked, causing player-occupied passenger seats to be ignored
+
+### Added
+- **Zone-based settings implementation** - `Config.ZoneSettings` is now fully functional; added `ApplyZoneSettings()` which overrides population density when the player enters a configured zone radius
+- **Boat and train suppression** - `disableBoats` now calls `SetRandomBoats(false)` and `disableTrains` now calls `SetRandomTrains(false)`
+- **Helicopter model suppression** - `disableHelicopters` now suppresses all common civilian and military helicopter models
+- **Plane model suppression** - `disablePlanes` now suppresses all common civilian and military fixed-wing aircraft models; removed the invalid `toredo` entry (the Toreador is a submarine, not a plane)
+- **Qbox job update handler** - Added `QBCore:Client:OnJobUpdate` event handler when Qbox compatibility is enabled, mirroring the existing QBCore handler
+
 ## [1.2.0] - 2026-02-15
 
 ### Added

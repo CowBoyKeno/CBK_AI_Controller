@@ -17,7 +17,7 @@ AddEventHandler('onResourceStart', function(resourceName)
     
     print("^2========================================^7")
     print("^2  FiveM AI NPC Controller Started^7")
-    print("^2  Version: 1.0.0^7")
+    print("^2  Version: 1.3.0^7")
     print("^2  Author: ArmA3Cowboy^7")
     print("^2========================================^7")
     print("^3Configuration Status:^7")
