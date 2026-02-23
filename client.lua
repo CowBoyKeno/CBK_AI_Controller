@@ -162,12 +162,9 @@ end
 
 -- Apply NPC behavior settings
 function ApplyNPCBehavior()
-    local playerPed = PlayerPedId()
-    
     -- Apply combat settings
-    if currentConfig.NPCBehavior.disableNPCCombat then
-        SetPedDensityMultiplierThisFrame(0.0)
-    end
+    -- Note: disableNPCCombat requires per-ped native calls (SetPedCombatAbility) applied
+    -- in the periodic behavior thread below, not via a global native here.
     
     -- Disable wanted level if configured
     if currentConfig.WantedSystem.disableWantedLevel then
@@ -283,6 +280,28 @@ function ApplyVehicleSettings()
     
     if settings.disableFiretruckVehicles then
         SetVehicleModelIsSuppressed(GetHashKey("firetruk"), true)
+    end
+    
+    if settings.disableBoats then
+        SetRandomBoats(false)
+    end
+    
+    if settings.disableTrains then
+        SetRandomTrains(false)
+    end
+    
+    if settings.disableHelicopters then
+        local heliModels = {"maverick", "buzzard", "buzzard2", "swift", "swift2", "annihilator", "savage", "frogger", "frogger2", "supervolito", "supervolito2", "volatus", "skylift", "seasparrow"}
+        for _, model in ipairs(heliModels) do
+            SetVehicleModelIsSuppressed(GetHashKey(model), true)
+        end
+    end
+    
+    if settings.disablePlanes then
+        local planeModels = {"luxor", "luxor2", "jet", "lazer", "titan", "dodo", "velum", "velum2", "besra", "miljet", "shamal", "hydra", "cuban800", "alpha", "stuntplane", "mammatus", "mogul", "rogue", "starling", "tula", "ultralight", "vestra", "volatol"}
+        for _, model in ipairs(planeModels) do
+            SetVehicleModelIsSuppressed(GetHashKey(model), true)
+        end
     end
 end
 
@@ -402,7 +421,8 @@ function ApplyEmergencyVehicleBehavior()
     local isPlayerEmergency = IsEmergencyVehicle(playerVehicle)
     local playerLightsOn = HasEmergencyLightsOn(playerVehicle)
     
-    if not isPlayerEmergency or not playerLightsOn then return end
+    if not isPlayerEmergency then return end
+    if settings.requireSiren and not playerLightsOn then return end
     
     local playerCoords = GetEntityCoords(playerVehicle)
     local playerSpeed = GetEntitySpeed(playerVehicle)
@@ -514,6 +534,30 @@ function ApplyTimeBasedSettings()
     end
 end
 
+-- Apply zone-based settings
+function ApplyZoneSettings()
+    if not currentConfig.ZoneSettings.enabled then return end
+    
+    local playerPed = PlayerPedId()
+    local playerCoords = GetEntityCoords(playerPed)
+    
+    for _, zone in ipairs(currentConfig.ZoneSettings.zones) do
+        local distance = #(playerCoords - zone.coords)
+        if distance <= zone.radius then
+            -- Apply this zone's density settings (overrides global population density)
+            if zone.pedDensity then
+                SetPedDensityMultiplierThisFrame(zone.pedDensity)
+                SetScenarioPedDensityMultiplierThisFrame(zone.pedDensity, zone.pedDensity)
+            end
+            if zone.vehicleDensity then
+                SetVehicleDensityMultiplierThisFrame(zone.vehicleDensity)
+                SetRandomVehicleDensityMultiplierThisFrame(zone.vehicleDensity)
+            end
+            break  -- Apply only the first matching zone
+        end
+    end
+end
+
 -- Apply all settings
 function ApplyAllSettings()
     if not currentConfig.EnableNPCs then
@@ -533,6 +577,7 @@ function ApplyAllSettings()
     ApplyVehicleSettings()
     ApplyRelationships()
     ApplyTimeBasedSettings()
+    ApplyZoneSettings()
     ApplyEmergencyVehicleBehavior()
 end
 
@@ -578,8 +623,20 @@ Citizen.CreateThread(function()
             for _, vehicle in ipairs(vehicles) do
                 local vehicleCoords = GetEntityCoords(vehicle)
                 local distance = #(playerCoords - vehicleCoords)
-                if distance > cleanupDistance and not IsPedAPlayer(GetPedInVehicleSeat(vehicle, -1)) then
-                    DeleteEntity(vehicle)
+                if distance > cleanupDistance then
+                    -- Check all seats (driver + passengers) for player occupants
+                    local hasPlayerOccupant = false
+                    local maxSeats = GetVehicleMaxNumberOfPassengers(vehicle)
+                    for seat = -1, maxSeats do
+                        local ped = GetPedInVehicleSeat(vehicle, seat)
+                        if ped ~= 0 and IsPedAPlayer(ped) then
+                            hasPlayerOccupant = true
+                            break
+                        end
+                    end
+                    if not hasPlayerOccupant then
+                        DeleteEntity(vehicle)
+                    end
                 end
             end
         end
@@ -594,7 +651,7 @@ Citizen.CreateThread(function()
     TriggerServerEvent('ai_controller:requestConfig')
     
     -- Request player job if framework is enabled
-    if currentConfig.Compatibility.ESX or currentConfig.Compatibility.QBCore or currentConfig.Compatibility.vRP then
+    if currentConfig.Compatibility.ESX or currentConfig.Compatibility.QBCore or currentConfig.Compatibility.Qbox or currentConfig.Compatibility.vRP or currentConfig.Compatibility.NDCore then
         TriggerServerEvent('ai_controller:checkPlayerJob')
     end
     
@@ -668,6 +725,16 @@ if currentConfig.Compatibility.ESX then
 end
 
 if currentConfig.Compatibility.QBCore then
+    RegisterNetEvent('QBCore:Client:OnJobUpdate')
+    AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
+        playerJob = JobInfo.name
+        if currentConfig.Advanced.debug then
+            print("^3[AI Controller Debug]^7 Player job updated to: " .. playerJob)
+        end
+    end)
+end
+
+if currentConfig.Compatibility.Qbox then
     RegisterNetEvent('QBCore:Client:OnJobUpdate')
     AddEventHandler('QBCore:Client:OnJobUpdate', function(JobInfo)
         playerJob = JobInfo.name
