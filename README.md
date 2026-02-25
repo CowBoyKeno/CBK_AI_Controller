@@ -48,99 +48,9 @@ Realistic traffic response to emergency vehicles with lights activated:
 
 All settings are in `config.lua` with detailed descriptions. Here are the main sections:
 
-### General NPC Settings
-```lua
-Config.EnableNPCs = true -- Master toggle for all NPCs
-Config.PopulationDensity = {
-    enabled = true,
-    pedDensity = 0.5,          -- 0.0 = no peds, 1.0 = maximum
-    vehicleDensity = 0.5,      -- 0.0 = no vehicles, 1.0 = maximum
-    parkedVehicleDensity = 0.5,
-    scenarioPedDensity = 0.5,
-}
-```
+See ## EXAMPLES.md
 
-### Job-Based Behavior
-```lua
-Config.JobRespect = {
-    enabled = true,
-    policeJobs = {'police', 'sheriff', 'state', 'trooper'},
-    policeSettings = {
-        npcsRespectPolice = true,
-        npcsStopForPolice = true,
-        npcsFearPolice = true,
-        reducedAggression = true,
-        npcsCallPolice = true,
-    },
-    -- Similar settings for medical, firefighter, and tow jobs
-}
-```
 
-### NPC Behavior
-```lua
-Config.NPCBehavior = {
-    ignorePlayer = false,           -- NPCs ignore player completely
-    fleeFromPlayer = false,         -- NPCs run away from player
-    panicFromGunfire = true,       -- NPCs panic when shots fired
-    disableNPCWeapons = false,     -- Prevent NPCs from using weapons
-    npcDrivingStyle = 'normal',    -- 'normal', 'careful', 'reckless'
-    respectTrafficLights = true,   -- NPCs obey traffic lights
-}
-```
-
-### Emergency Vehicle Behavior
-```lua
-Config.VehicleSettings.emergencyVehicleBehavior = {
-    enabled = true,              -- Enable emergency vehicle response behavior
-    
-    -- Slow Pass (stopped emergency vehicles)
-    slowPassEnabled = true,      -- NPCs pass stopped emergency vehicles slowly
-    slowPassRadius = 30.0,       -- Detection radius (meters)
-    slowPassSpeed = 5.0,         -- Speed limit when passing (mph)
-    
-    -- Pull Over (moving emergency vehicles)
-    pullOverEnabled = true,      -- NPCs pull over for approaching emergency vehicles
-    pullOverDistance = 50.0,     -- Detection distance (meters)
-    pullOverDuration = 8000,     -- How long to stay pulled over (ms)
-    checkBehind = true,          -- Check for emergency vehicles behind
-    checkFront = true,           -- Check for emergency vehicles in front
-    
-    -- Courtesy Behavior
-    disableHornNearEmergency = true,  -- NPCs don't honk near emergency vehicles (Not implemented - FiveM limitation)
-    disableSpeechNearEmergency = true, -- NPCs stay quiet near emergency vehicles
-    courtesyRadius = 40.0,       -- Radius for courtesy behavior (meters)
-    
-    -- Detection Settings
-    detectPolice = true,         -- Respond to police vehicles
-    detectAmbulance = true,      -- Respond to ambulances
-    detectFiretruck = true,      -- Respond to fire trucks
-    requireSiren = true,         -- Only respond if emergency lights are on
-}
-```
-
-### Vehicle Settings
-```lua
-Config.VehicleSettings = {
-    disablePoliceVehicles = false,
-    disableAmbulanceVehicles = false,
-    disableFiretruckVehicles = false,
-    disableBoats = false,
-    disablePlanes = false,
-    disableHelicopters = false,
-    enableTraffic = true,
-    trafficDensity = 0.5,
-}
-```
-
-### Wanted System
-```lua
-Config.WantedSystem = {
-    disableWantedLevel = true,      -- Disable player wanted level
-    disablePoliceResponse = false,   -- Disable police chasing player
-    disablePoliceHelicopters = true, -- No police helis
-    maxWantedLevel = 5,             -- Maximum wanted level (0-5)
-}
-```
 
 ## 🎮 Commands
 
@@ -261,33 +171,9 @@ Config.Advanced = {
 
 Every aspect of NPC behavior is customizable through `config.lua`. All settings include descriptions and can be toggled on/off independently.
 
-### Example: Disable All NPCs at Night
-```lua
-Config.TimeBasedSettings = {
-    enabled = true,
-    nightSettings = {
-        pedDensity = 0.0,      -- No peds at night
-        vehicleDensity = 0.2,   -- Light traffic
-        enableScenarios = false,
-    },
-}
-```
+See ## EXAMPLES.md
 
-### Example: High Density City Center
-```lua
-Config.ZoneSettings = {
-    enabled = true,
-    zones = {
-        {
-            name = "Downtown",
-            coords = vector3(-234.14, -877.87, 30.49),
-            radius = 500.0,
-            pedDensity = 0.9,    -- Lots of people
-            vehicleDensity = 0.9, -- Heavy traffic
-        },
-    },
-}
-```
+
 
 ## 📝 License
 
