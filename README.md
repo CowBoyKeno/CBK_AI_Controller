@@ -189,7 +189,9 @@ If you encounter any issues or have questions, please open an issue on GitHub.
 
 ## 🔄 Updates
 
-### See CHANGELOG.md
+See ## CHANGELOG.md
+
+
 
 ## ⭐ Credits
 
