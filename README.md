@@ -303,14 +303,7 @@ If you encounter any issues or have questions, please open an issue on GitHub.
 
 ## 🔄 Updates
 
-### Version 1.0.0
-- Initial release
-- Complete NPC control system
-- Job-based NPC behavior
-- Framework integration (ESX, QBCore, Qbox, vRP, ND-core)
-- Comprehensive configuration options
-- Admin commands
-- Performance optimization
+### See CHANGELOG.md
 
 ## ⭐ Credits
 
