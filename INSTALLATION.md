@@ -4,8 +4,8 @@
 
 ### 1. Download and Install
 1. Download the latest release or clone this repository
-2. Place the `FiveM_AI_Controller` folder in your FiveM server's `resources` folder
-3. Add `ensure FiveM_AI_Controller` to your `server.cfg` file
+2. Place the `CBK_AI_Controller` folder in your FiveM server's `resources` folder
+3. Add `ensure CBK_AI_Controller` to your `server.cfg` file
 4. Restart your server
 
 ### 2. Basic Configuration
@@ -137,7 +137,7 @@ After installation, these commands are available (with admin permission):
 ### NPCs are not spawning
 - Check that `Config.EnableNPCs = true`
 - Verify density values are greater than 0.0
-- Make sure the resource is started: `ensure FiveM_AI_Controller` in server.cfg
+- Make sure the resource is started: `ensure CBK_AI_Controller` in server.cfg
 
 ### Commands don't work
 - Check admin permissions in server.cfg
@@ -213,7 +213,7 @@ Config.Relationships = {
 ## Support
 
 For issues, questions, or feature requests, please visit:
-https://github.com/ArmA3Cowboy/FiveM_AI_Controller/issues
+https://github.com/CowBoyKeno/CBK_AI_Controller/issues
 
 ## Performance Tips
 
