@@ -158,4 +158,4 @@ Versions follow [Semantic Versioning](https://semver.org/):
 ## Support
 
 For bug reports, feature requests, or questions, please open an issue on GitHub:
-https://github.com/ArmA3Cowboy/FiveM_AI_Controller/issues
+https://github.com/CowBoyKeno/CBK_AI_Controller/issues

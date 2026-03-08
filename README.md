@@ -40,7 +40,7 @@ Realistic traffic response to emergency vehicles with lights activated:
 
 1. Download the resource
 2. Place it in your server's `resources` folder
-3. Add `ensure FiveM_AI_Controller` to your `server.cfg`
+3. Add `ensure CBK_AI_Controller` to your `server.cfg`
 4. Configure the settings in `config.lua`
 5. Restart your server
 
@@ -105,25 +105,25 @@ The script will automatically detect player jobs from your framework and apply a
 ### Client-Side Exports
 ```lua
 -- Get current configuration
-local config = exports['FiveM_AI_Controller']:GetConfig()
+local config = exports['CBK_AI_Controller']:GetConfig()
 
 -- Get player's current job
-local job = exports['FiveM_AI_Controller']:GetPlayerJob()
+local job = exports['CBK_AI_Controller']:GetPlayerJob()
 
 -- Set player job manually
-exports['FiveM_AI_Controller']:SetPlayerJob('police')
+exports['CBK_AI_Controller']:SetPlayerJob('police')
 ```
 
 ### Server-Side Exports
 ```lua
 -- Get current configuration
-local config = exports['FiveM_AI_Controller']:GetConfig()
+local config = exports['CBK_AI_Controller']:GetConfig()
 
 -- Update configuration
-exports['FiveM_AI_Controller']:SetConfig(newConfig)
+exports['CBK_AI_Controller']:SetConfig(newConfig)
 
 -- Get player's job
-local job = exports['FiveM_AI_Controller']:GetPlayerJob(source)
+local job = exports['CBK_AI_Controller']:GetPlayerJob(source)
 ```
 
 ## 📊 Performance
@@ -195,7 +195,7 @@ See ## CHANGELOG.md
 
 ## ⭐ Credits
 
-Created by ArmA3Cowboy
+Created by CowBoyKeno
 
 ---
 

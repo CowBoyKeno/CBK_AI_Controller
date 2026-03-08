@@ -1,7 +1,7 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author 'ArmA3Cowboy'
+author 'CowBoyKeno'
 description 'Complete AI NPC Controller for FiveM Servers - Full control over AI behavior, spawning, and interaction'
 version '1.3.0'
 
